@@ -30,4 +30,8 @@ sysinfo.txt
 /export/
 
 local.properties
+<<<<<<< HEAD
 *.iml
+=======
+*.iml
+>>>>>>> 78f578d0fda0eec8eaa4cdec8d73c7928b6cbbf5
