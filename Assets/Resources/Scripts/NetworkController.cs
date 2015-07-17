@@ -48,6 +48,7 @@ public class NetworkController : MonoBehaviour {
 	public InputField inputFieldAddress;
 
 	private int hostId;
+	private HostTopology hostTopology;
 
 	void Start() {
 		inputFieldAddress.text = "192.168.1.104";
@@ -110,7 +111,7 @@ public class NetworkController : MonoBehaviour {
 		byte channelUnreliable = connectionConfig.AddChannel (QosType.Unreliable);
 		
 		// Create host config
-		HostTopology hostTopology = new HostTopology (connectionConfig, 10);
+		hostTopology = new HostTopology (connectionConfig, 10);
 		
 		// Init network
 		NetworkTransport.Init (globalConfig);
