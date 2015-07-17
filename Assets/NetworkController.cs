@@ -2,8 +2,9 @@
 using UnityEngine.Networking;
 using System.Collections;
 using UnityEngine.UI;
+using System.Net.Sockets;
 
-public class NetworkController : MonoBehaviour{
+public class NetworkController : MonoBehaviour {
 
 	public InputField inputFieldAddress;
 
@@ -13,7 +14,7 @@ public class NetworkController : MonoBehaviour{
 
 	public void OnButtonStartServerClicked() {
 		Debug.Log ("Starting server...");
-		NetworkConnectionError status = Network.InitializeServer(2, 9000);
+		NetworkConnectionError status = Network.InitializeServer(4, 9000);
 		Debug.Log (status);
 	}
 
@@ -26,6 +27,10 @@ public class NetworkController : MonoBehaviour{
 
 	void OnConnectedToServer() {
 		Debug.Log ("OnConnectedToServer");
+	}
+
+	void OnStartServer() {
+		Debug.Log ("OnStartServer");
 	}
 
 	void OnStartClient() {

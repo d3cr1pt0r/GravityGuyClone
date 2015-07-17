@@ -16,7 +16,7 @@ Platform assembly: D:\Documents\Programming\Unity\GravityGuyClone\GravityGuyClon
 Loading D:\Documents\Programming\Unity\GravityGuyClone\GravityGuyClone_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\Documents\Programming\Unity\GravityGuyClone\GravityGuyClone_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Documents\Programming\Unity\GravityGuyClone\GravityGuyClone_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.051 seconds
+- Completed reload, in  0.102 seconds
 desktop: 1366x768 60Hz; virtual: 3286x1080 at 0,-312
 <RI> Initializing input.
 <RI> Input initialized.
@@ -24,12 +24,71 @@ desktop: 1366x768 60Hz; virtual: 3286x1080 at 0,-312
 Platform assembly: D:\Documents\Programming\Unity\GravityGuyClone\GravityGuyClone_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Documents\Programming\Unity\GravityGuyClone\GravityGuyClone_Data\Managed\System.dll (this message is harmless)
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 1bd0 -> priority: 1 
-  Thread -> id: 1a38 -> priority: 1 
+  Thread -> id: 1330 -> priority: 1 
+  Thread -> id: 1584 -> priority: 1 
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.954037 ms
+UnloadTime: 2.564474 ms
 
-Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 264.
-Total: 0.244533 ms (FindLiveObjects: 0.013386 ms CreateObjectMapping: 0.008478 ms MarkObjects: 0.214636 ms  DeleteObjects: 0.007585 ms)
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 260.
+Total: 0.240963 ms (FindLiveObjects: 0.013833 ms CreateObjectMapping: 0.008478 ms MarkObjects: 0.209727 ms  DeleteObjects: 0.008478 ms)
 
-Log: connection {1} has been disconnected by timeout; address {::ffff:127.0.0.1:63406}
+Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.322176 ms
+
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 237.
+Total: 0.291387 ms (FindLiveObjects: 0.013833 ms CreateObjectMapping: 0.008478 ms MarkObjects: 0.254796 ms  DeleteObjects: 0.014279 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.315037 ms
+
+Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 266.
+Total: 0.255688 ms (FindLiveObjects: 0.014725 ms CreateObjectMapping: 0.011601 ms MarkObjects: 0.219544 ms  DeleteObjects: 0.009370 ms)
+
+CmdJump
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+CmdJump
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+CmdJump
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+CmdJump
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+
+JUMP!
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
+

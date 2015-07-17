@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
 	public float runSpeed;
 	public float jumpSpeed;
@@ -17,13 +17,30 @@ public class PlayerController : MonoBehaviour
 
 	void Update ()
 	{
-		if (!isJumping && Input.GetKeyDown (KeyCode.Space))
+		if(isLocalPlayer)
 		{
-			Debug.Log ("JUMP!");
-			gameObject.transform.Rotate(0, 180, 180);
-			jumpSpeed *= -1;
-			isJumping = true;
+			if (!isJumping && Input.GetKeyDown (KeyCode.Space))
+			{
+				Debug.Log ("CmdJump");
+				CmdJump();
+				if(!isServer)
+				{
+					Debug.Log ("Jump");
+					gameObject.transform.Rotate(0, 180, 180);
+					jumpSpeed *= -1;
+					isJumping = true;
+				}
+			}
 		}
+	}
+
+	[Command]
+	void CmdJump()
+	{
+		Debug.Log ("JUMP!");
+		gameObject.transform.Rotate(0, 180, 180);
+		jumpSpeed *= -1;
+		isJumping = true;
 	}
 
 	void FixedUpdate()
