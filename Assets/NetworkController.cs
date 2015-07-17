@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityEngine.UI;
 
 public class NetworkController : MonoBehaviour{
 
-	void Start() {
+	public InputField inputFieldAddress;
 
+	void Start() {
+		inputFieldAddress.text = "192.168.1.104";
 	}
 
 	public void OnButtonStartServerClicked() {
@@ -15,8 +18,9 @@ public class NetworkController : MonoBehaviour{
 	}
 
 	public void OnButtonConnectClick() {
-		Debug.Log ("Connecting to server...");
-		NetworkConnectionError status = Network.Connect ("localhost", 9000);
+		string address = inputFieldAddress.text;
+		Debug.Log ("Connecting to server: " + address);
+		NetworkConnectionError status = Network.Connect (address, 9000);
 		Debug.Log (status);
 	}
 
