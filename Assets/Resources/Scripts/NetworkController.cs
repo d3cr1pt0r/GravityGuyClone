@@ -47,85 +47,36 @@ public class NetworkController : MonoBehaviour {
 
 	public InputField inputFieldAddress;
 
-	private int hostId;
-	private HostTopology hostTopology;
-	private int connectionId;
+	private Peer peer;
+
+	const int PORT = 8888;
 
 	void Start() {
-		inputFieldAddress.text = "192.168.1.104";
-		hostId = 1;
+		inputFieldAddress.text = "192.168.0.100";
+
+		peer = new Peer(PORT);
+		peer.onConnected += new Peer.NetworkEvent(onPeerConnected); 
+		Debug.Log (peer.socketAlive);
+
 	}
+
 
 	void Update() {
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			byte error;
-			byte[] buffer = System.Text.Encoding.ASCII.GetBytes ("Hello world");
-			
-			int channelId = 1;
-			NetworkTransport.Send (hostId, connectionId, channelId, buffer, buffer.Length, out error);
 
-			Debug.Log (error);
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			peer.sendString("fool");
 		}
 	}
 
-	public void OnButtonStartServerClicked() {
-		initNetworkConfig();
-
-		hostId = NetworkTransport.AddHost (hostTopology, 8888);
-		Debug.Log ("Host ID: " + hostId.ToString());
-	
-		StartCoroutine (CoroutineExample.CoroutineReceiveRequest ());
-
-		// Connect to host
-		/*
-		byte error;
-		int connectionId = NetworkTransport.Connect (hostId, "127.0.0.1", 6000, 0, out error);
-		Debug.Log (error);
-
-		if (error != (byte)NetworkError.Ok) {
-			NetworkError nerror = (NetworkError)error;
-			Debug.Log ("Connection error: " + nerror.ToString());
-		}
-
-		byte[] buffer = new byte[1024];
-		Stream stream = new MemoryStream (buffer);
-		BinaryFormatter formatter = new BinaryFormatter ();
-		formatter.Serialize (stream, "MyMessage");
-
-		int channelId = 1;
-		NetworkTransport.Send (hostId, connectionId, channelId, buffer, (int)stream.Position, out error);
-		*/
+	void onPeerConnected(Peer p, int connectionId) {
+		Debug.Log (connectionId);
 	}
 
 	public void OnButtonConnectClick() {
-		string address = inputFieldAddress.text;
-
-		// Connect to host
-		byte error;
-		connectionId = NetworkTransport.Connect (hostId, address, 8888, 0, out error);
-		Debug.Log (error);
-
-		if (error != (byte)NetworkError.Ok) {
-			NetworkError nerror = (NetworkError)error;
-			Debug.Log ("Connection error: " + nerror.ToString());
+		if (peer.connectSocket(inputFieldAddress.text, PORT)) {
+			Debug.Log("connected");
 		}
 	}
 
-	void initNetworkConfig() {
-		// Create global config
-		GlobalConfig globalConfig = new GlobalConfig ();
-		globalConfig.ReactorModel = ReactorModel.FixRateReactor;
-		globalConfig.ThreadAwakeTimeout = 1;
-		
-		// Create connection config
-		ConnectionConfig connectionConfig = new ConnectionConfig ();
-		byte channelReliable = connectionConfig.AddChannel (QosType.Reliable);
-		byte channelUnreliable = connectionConfig.AddChannel (QosType.Unreliable);
-		
-		// Create host config
-		hostTopology = new HostTopology (connectionConfig, 10);
-		
-		// Init network
-		NetworkTransport.Init (globalConfig);
-	}
+
 }
