@@ -21,6 +21,7 @@ public class CoroutineExample : MonoBehaviour {
 			NetworkEventType recData = NetworkTransport.Receive (out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
 			switch(recData) {
 				case NetworkEventType.Nothing:
+					//Debug.Log ("Nothing");
 					yield return null;
 					break;
 				case NetworkEventType.ConnectEvent:
@@ -53,21 +54,8 @@ public class NetworkController : MonoBehaviour {
 	}
 
 	public void OnButtonStartServerClicked() {
-		// Create global config
-		GlobalConfig globalConfig = new GlobalConfig ();
-		globalConfig.ReactorModel = ReactorModel.FixRateReactor;
-		globalConfig.ThreadAwakeTimeout = 1;
+		initNetworkConfig();
 
-		// Create connection config
-		ConnectionConfig connectionConfig = new ConnectionConfig ();
-		byte channelReliable = connectionConfig.AddChannel (QosType.ReliableSequenced);
-		byte channelUnreliable = connectionConfig.AddChannel (QosType.UnreliableSequenced);
-
-		// Create host config
-		HostTopology hostTopology = new HostTopology (connectionConfig, 1);
-
-		// Init network
-		NetworkTransport.Init (globalConfig);
 		hostId = NetworkTransport.AddHost (hostTopology, 5000);
 		Debug.Log (hostId);
 	
@@ -95,11 +83,13 @@ public class NetworkController : MonoBehaviour {
 	}
 
 	public void OnButtonConnectClick() {
+		initNetworkConfig();
+
 		string address = inputFieldAddress.text;
 
 		// Connect to host
 		byte error;
-		int connectionId = NetworkTransport.Connect (hostId, "127.0.0.1", 5000, 0, out error);
+		int connectionId = NetworkTransport.Connect (hostId, address, 5000, 0, out error);
 		Debug.Log (error);
 
 		if (error != (byte)NetworkError.Ok) {
@@ -108,9 +98,21 @@ public class NetworkController : MonoBehaviour {
 		}
 	}
 
-	void listenForRequests() {
-		while (true) {
-			Debug.Log ("Listening...");
-		}
+	void initNetworkConfig() {
+		// Create global config
+		GlobalConfig globalConfig = new GlobalConfig ();
+		globalConfig.ReactorModel = ReactorModel.FixRateReactor;
+		globalConfig.ThreadAwakeTimeout = 1;
+		
+		// Create connection config
+		ConnectionConfig connectionConfig = new ConnectionConfig ();
+		byte channelReliable = connectionConfig.AddChannel (QosType.Reliable);
+		byte channelUnreliable = connectionConfig.AddChannel (QosType.Unreliable);
+		
+		// Create host config
+		HostTopology hostTopology = new HostTopology (connectionConfig, 10);
+		
+		// Init network
+		NetworkTransport.Init (globalConfig);
 	}
 }
