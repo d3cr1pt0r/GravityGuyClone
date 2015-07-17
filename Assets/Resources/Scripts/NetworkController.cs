@@ -21,8 +21,6 @@ public class CoroutineExample : MonoBehaviour {
 			NetworkEventType recData = NetworkTransport.Receive (out recHostId, out connectionId, out channelId, buffer, 1024, out dataSize, out error);
 			switch(recData) {
 				case NetworkEventType.Nothing:
-					//Debug.Log ("Nothing");
-					yield return null;
 					break;
 				case NetworkEventType.ConnectEvent:
 					Debug.Log ("Connection received...");
@@ -31,7 +29,8 @@ public class CoroutineExample : MonoBehaviour {
 					Debug.Log ("DisconnectEvent");
 					break;
 				case NetworkEventType.DataEvent:
-					Debug.Log ("DataEvent");
+					string data = System.Text.Encoding.ASCII.GetString (buffer);
+					Debug.Log ("DataEvent: " + data);
 					break;
 				case NetworkEventType.BroadcastEvent:
 					Debug.Log ("BroadcastEvent");
@@ -39,6 +38,7 @@ public class CoroutineExample : MonoBehaviour {
 				default:
 					break;
 			}
+			yield return null;
 		}
 	}
 }
@@ -49,16 +49,30 @@ public class NetworkController : MonoBehaviour {
 
 	private int hostId;
 	private HostTopology hostTopology;
+	private int connectionId;
 
 	void Start() {
 		inputFieldAddress.text = "192.168.1.104";
+		hostId = 1;
+	}
+
+	void Update() {
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			byte error;
+			byte[] buffer = System.Text.Encoding.ASCII.GetBytes ("Hello world");
+			
+			int channelId = 1;
+			NetworkTransport.Send (hostId, connectionId, channelId, buffer, buffer.Length, out error);
+
+			Debug.Log (error);
+		}
 	}
 
 	public void OnButtonStartServerClicked() {
 		initNetworkConfig();
 
-		hostId = NetworkTransport.AddHost (hostTopology, 5000);
-		Debug.Log (hostId);
+		hostId = NetworkTransport.AddHost (hostTopology, 8888);
+		Debug.Log ("Host ID: " + hostId.ToString());
 	
 		StartCoroutine (CoroutineExample.CoroutineReceiveRequest ());
 
@@ -84,13 +98,11 @@ public class NetworkController : MonoBehaviour {
 	}
 
 	public void OnButtonConnectClick() {
-		initNetworkConfig();
-
 		string address = inputFieldAddress.text;
 
 		// Connect to host
 		byte error;
-		int connectionId = NetworkTransport.Connect (hostId, address, 5000, 0, out error);
+		connectionId = NetworkTransport.Connect (hostId, address, 8888, 0, out error);
 		Debug.Log (error);
 
 		if (error != (byte)NetworkError.Ok) {
