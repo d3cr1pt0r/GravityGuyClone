@@ -31,8 +31,9 @@ public class NetworkController : MonoBehaviour {
 
 	void Update() {
 
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			peer.sendString("fool");
+		if (Input.GetMouseButtonDown(0)) {
+			Vector3 touchPos = Input.mousePosition;
+			peer.sendString(touchPos.ToString());
 		}
 	}
 
