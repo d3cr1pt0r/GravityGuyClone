@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections;
 using System.Threading;
@@ -14,13 +13,20 @@ public class NetworkController : MonoBehaviour {
 
 	const int PORT = 8888;
 
+	public void OnButtonConnectClick() {
+		if (peer.connectSocket(inputFieldAddress.text, PORT)) {
+			Debug.Log("Connected to peer");
+		}
+	}
+
 	void Start() {
-		inputFieldAddress.text = "192.168.0.100";
+		inputFieldAddress.text = "127.0.0.1";
 
 		peer = new Peer(PORT);
-		peer.onConnected += new Peer.NetworkEvent(onPeerConnected);
+		peer.onConnectionReceived += new Peer.ConnectionHandler(onPeerConnected);
+		peer.onDataReceived += new Peer.DataReceivedHandler(onPeerDataReceived);
 
-		Debug.Log (peer.socketAlive);
+		Debug.Log ("Socket alive: " + peer.socketAlive.ToString());
 	}
 
 	void Update() {
@@ -30,15 +36,16 @@ public class NetworkController : MonoBehaviour {
 		}
 	}
 
-	void onPeerConnected(Peer p, int connectionId) {
+	void FixedUpdate() {
+		peer.CheckForNetworkEvents();
+	}
+
+	void onPeerConnected(int connectionId) {
 		Debug.Log ("Peer connected: " + connectionId.ToString());
 	}
 
-	public void OnButtonConnectClick() {
-		if (peer.connectSocket(inputFieldAddress.text, PORT)) {
-			Debug.Log("Connected to peer");
-		}
+	void onPeerDataReceived(string message) {
+		Debug.Log ("Peer message: " + message);
 	}
-
-
+	
 }
