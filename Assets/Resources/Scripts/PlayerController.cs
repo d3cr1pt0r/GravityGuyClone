@@ -7,27 +7,30 @@ public class PlayerController : MonoBehaviour
 	public float runSpeed;
 	public float jumpSpeed;
 	
+	private bool isLocalPlayer = false;
 	private bool isJumping = true;
+	private Peer peer = null;
 
 	void Start ()
 	{
-
+		
 	}
 
 	void Update ()
 	{
-		if (!isJumping && Input.GetKeyDown (KeyCode.Space))
-		{
-			Jump();
+		if (isLocalPlayer && Input.GetMouseButtonDown(0)) {
+			Jump ();
+			peer.SendString("j");
 		}
 	}
-	
+
 	void Jump()
 	{
-		Debug.Log ("JUMP!");
-		gameObject.transform.Rotate(0, 180, 180);
-		jumpSpeed *= -1;
-		isJumping = true;
+		if (!isJumping) {
+			gameObject.transform.Rotate (0, 180, 180);
+			jumpSpeed *= -1;
+			isJumping = true;
+		}
 	}
 
 	void FixedUpdate()
@@ -43,5 +46,22 @@ public class PlayerController : MonoBehaviour
 			// TODO: Adjust player position to floor position
 			isJumping = false;
 		}
+	}
+	
+	void onPeerDataReceived(string message) {
+		Debug.Log ("Message received: " + message);
+		Debug.Log (isLocalPlayer);
+
+		if (message == "j")
+			Jump ();
+	}
+
+	public void SetPeer(Peer peer) {
+		this.peer = peer;
+		peer.onDataReceived += new Peer.DataReceivedHandler (onPeerDataReceived);
+	}
+
+	public void SetIsLocalPlayer(bool isLocalPlayer) {
+		this.isLocalPlayer = isLocalPlayer;
 	}
 }

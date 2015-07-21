@@ -7,46 +7,53 @@ using System.IO;
 
 public class NetworkController : MonoBehaviour {
 
-	public InputField inputFieldAddress;
+	public GameObject Player;
+	public InputField InputFieldAddress;
+	public Text ConnectionStatusText;
 
 	private Peer peer;
 
 	const int PORT = 8888;
 
 	public void OnButtonConnectClick() {
-		if (peer.connectSocket(inputFieldAddress.text, PORT)) {
-			Debug.Log("Connected to peer");
+		if (peer.ConnectSocket(InputFieldAddress.text, PORT)) {
+
 		}
+	}
+
+	void Awake() {
+		DontDestroyOnLoad (transform.gameObject);
 	}
 
 	void Start() {
-		inputFieldAddress.text = "127.0.0.1";
+		InputFieldAddress.text = "127.0.0.1";
 
 		peer = new Peer(PORT);
 		peer.onConnectionReceived += new Peer.ConnectionHandler(onPeerConnected);
-		peer.onDataReceived += new Peer.DataReceivedHandler(onPeerDataReceived);
 
 		Debug.Log ("Socket alive: " + peer.socketAlive.ToString());
-	}
-
-	void Update() {
-
-		if (Input.GetMouseButtonDown(0)) {
-			Vector3 touchPos = Input.mousePosition;
-			peer.sendString(touchPos.ToString());
-		}
 	}
 
 	void FixedUpdate() {
 		peer.CheckForNetworkEvents();
 	}
 
-	void onPeerConnected(int connectionId) {
-		Debug.Log ("Peer connected: " + connectionId.ToString());
+	void OnLevelWasLoaded(int level) {
+		GameObject localPlayer = Instantiate (Player, new Vector3 (-4, 0, 0), Quaternion.Euler(0, 180, 0)) as GameObject;
+		GameObject peerPlayer = Instantiate (Player, new Vector3 (-2, 0, 0), Quaternion.Euler(0, 180, 0)) as GameObject;
+
+		localPlayer.GetComponent<PlayerController> ().SetIsLocalPlayer (true);
+		localPlayer.GetComponent<PlayerController> ().SetPeer (peer);
+
+		peerPlayer.GetComponent<PlayerController> ().SetIsLocalPlayer (false);
+		peerPlayer.GetComponent<PlayerController> ().SetPeer (peer);
 	}
 
-	void onPeerDataReceived(string message) {
-		Debug.Log ("Peer message: " + message);
-	}
-	
+	void onPeerConnected(int connectionId) {
+		Debug.Log ("Peer connected: " + connectionId.ToString());
+		ConnectionStatusText.text = "Connected";
+		ConnectionStatusText.color = Color.green;
+
+		Application.LoadLevel ("level_1");
+	}	
 }

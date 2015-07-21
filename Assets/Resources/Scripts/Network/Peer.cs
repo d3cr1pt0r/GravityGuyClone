@@ -58,29 +58,29 @@ public class Peer : MonoBehaviour
 		}
 	}
 
-	bool createSocket(int port) {
-		initNetworkConfig();
-		
-		hostId = NetworkTransport.AddHost (hostTopology, port);
-		return hostId != -1;
-	}
-
-	public void sendString(string str, int channelId = 1) {
+	public void SendString(string str, int channelId = 1) {
 		byte error;
 		byte[] buffer = System.Text.Encoding.ASCII.GetBytes (str);
 		NetworkTransport.Send(hostId, connectionId, channelId, buffer, buffer.Length, out error);
 	}
-
-	public bool connectSocket(string address, int port) {
+	
+	public bool ConnectSocket(string address, int port) {
 		byte error;
 		connectionId = NetworkTransport.Connect (hostId, address, port, 0, out error);
-
+		
 		if (error == (byte)NetworkError.Ok) {
 			if (onConnectionEstablished != null)
 				onConnectionEstablished(connectionId);
 			return true;
 		}
 		return false;
+	}
+
+	bool createSocket(int port) {
+		initNetworkConfig();
+		
+		hostId = NetworkTransport.AddHost (hostTopology, port);
+		return hostId != -1;
 	}
 
 	void initNetworkConfig() {
