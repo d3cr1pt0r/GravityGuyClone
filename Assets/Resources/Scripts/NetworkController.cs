@@ -16,9 +16,7 @@ public class NetworkController : MonoBehaviour {
 	const int PORT = 8888;
 
 	public void OnButtonConnectClick() {
-		if (peer.ConnectSocket(InputFieldAddress.text, PORT)) {
-
-		}
+		
 	}
 
 	void Awake() {
@@ -26,34 +24,17 @@ public class NetworkController : MonoBehaviour {
 	}
 
 	void Start() {
-		InputFieldAddress.text = "127.0.0.1";
-
-		peer = new Peer(PORT);
-		peer.onConnectionReceived += new Peer.ConnectionHandler(onPeerConnected);
-
-		Debug.Log ("Socket alive: " + peer.socketAlive.ToString());
+        UDPListener listener = new UDPListener(1337);
+        listener.Listen();
 	}
 
 	void FixedUpdate() {
-		peer.CheckForNetworkEvents();
+
 	}
 
 	void OnLevelWasLoaded(int level) {
 		GameObject localPlayer = Instantiate (Player, new Vector3 (-4, 0, 0), Quaternion.Euler(0, 180, 0)) as GameObject;
 		GameObject peerPlayer = Instantiate (Player, new Vector3 (-2, 0, 0), Quaternion.Euler(0, 180, 0)) as GameObject;
-
-		localPlayer.GetComponent<PlayerController> ().SetIsLocalPlayer (true);
-		localPlayer.GetComponent<PlayerController> ().SetPeer (peer);
-
-		peerPlayer.GetComponent<PlayerController> ().SetIsLocalPlayer (false);
-		peerPlayer.GetComponent<PlayerController> ().SetPeer (peer);
 	}
 
-	void onPeerConnected(int connectionId) {
-		Debug.Log ("Peer connected: " + connectionId.ToString());
-		ConnectionStatusText.text = "Connected";
-		ConnectionStatusText.color = Color.green;
-
-		Application.LoadLevel ("level_1");
-	}	
 }

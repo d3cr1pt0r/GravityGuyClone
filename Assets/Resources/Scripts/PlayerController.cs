@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	void Jump()
+	public void Jump()
 	{
 		if (!isJumping) {
 			gameObject.transform.Rotate (0, 180, 180);
